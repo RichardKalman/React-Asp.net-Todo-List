@@ -1,0 +1,112 @@
+
+
+//$border-dark: rgba($base-color, 0.88);
+$border-color: #0d7377;
+$border-color-form: #276678;
+$masodlagoshatter: #323232;
+$hatterszin: #212121;
+$szovegszine: #14ffec;
+$szovegform: white;
+$Up-Down-Fa: $szovegszine;
+$Delete-Fa: rgb(226, 55, 55);
+$Add-Fa : rgb(82, 245, 82);
+
+$placeholder-opacity: 0.60;
+
+
+.up-down-fa{
+    color: $Up-Down-Fa;
+    
+}
+.up-down-fa:hover{
+    color: rgba($Up-Down-Fa, 0.50);
+}
+
+.delete-fa{
+    color: $Delete-Fa;
+}
+.delete-fa:hover{
+    color:  rgba($Delete-Fa, 0.50);;
+}
+.add-fa{
+    color: $Add-Fa;
+}
+.add-fa:hover{
+    color:rgba($Add-Fa, 0.5);
+}
+
+
+
+
+.red{
+    color: red;
+    cursor: pointer;
+}
+
+.red:hover{
+    color:blue;
+    cursor: pointer;
+}
+
+[data-prefix="fas"]{
+    cursor: pointer;
+}
+
+
+body{
+    background-color: $hatterszin !important;
+    
+}
+
+.color{
+    color: $szovegszine !important;
+}
+
+.color-form{
+    color:$szovegform !important
+}
+
+.color::placeholder{
+    color: rgba($szovegszine, $placeholder-opacity)  !important;
+}
+.color::-ms-input-placeholder{
+    color: rgba($szovegszine, $placeholder-opacity)  !important;
+}
+.color:-ms-input-placeholder{
+    color: rgba($szovegszine, $placeholder-opacity)  !important;
+}
+
+
+.bg-egyedi{
+    background-color: $masodlagoshatter !important;
+}
+
+.border-egyedi{
+    border:1px $border-color solid !important; 
+}
+
+.border-color{
+    border-color: $border-color !important;
+}
+
+.border-color-second{
+    border-color: $border-color-form !important;
+}
+
+.nav-link{
+    color: rgba($szovegszine, 0.6) !important;
+}
+
+.nav-bar-link-color:hover{
+    color: rgba($szovegszine, 0.88) !important;
+}
+.active{
+    color: $szovegszine !important;
+    
+    font-weight: 600 !important;
+}
+
+.close{
+    color: $szovegszine !important;
+    text-shadow: rgba($szovegszine, 0.6) !important;
+}

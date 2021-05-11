@@ -39,7 +39,7 @@ Abban az esetben, ha nem külön domainen fut a két szerver, akkor Cors error-o
 
 **Frontendnek** a localhost:3000  linken kell elérhető, ha port különbözik, akkor a szerver gyökérkönyvtárában található startup.cs fájlban átkell írni a portot.
 
-  ![](image/serverport.png)
+  ![](https://github.com/RichardKalman/React-Asp.net-Todo-List/blob/main/Image/dragdropstruct.PNG)
 
 **Backendnek** a localhost:5000 linken kell elérhető lennie, ha esetleg más porton érhető vagy másik URL-en, akkor megkell változtatni a frontenden.
 

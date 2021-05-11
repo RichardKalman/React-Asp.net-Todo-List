@@ -13,11 +13,9 @@
 
 ## Telepítés
 
-<<<<<<< HEAD
 Töltsük le vagy klónozzuk le a repositoryt
 =======
 Töltsük vagy klónozzuk a repositoryt
->>>>>>> f8be42d63de262171d89e18236b87fc9b77398a6
 
 ### Backend elindítása
 
@@ -28,19 +26,15 @@ Töltsük vagy klónozzuk a repositoryt
 ./Client mappában nyissuk egy terminált/cmd és futtasuk a következő parancsokat
 
 1. **npm install**  ez a package-ek telepítésért felelős, leszed az internetről minden függőséget
-<<<<<<< HEAD
 2. ### **npm start** frontend indítása. 
 
 #### Alapértelmezett elérési utak, portok és változtatása
 
-=======
+
 2. **npm start** frontend indítása. 
 
 #### Alapértelmezett elérési utak, portok és változtatása
 
-
-
->>>>>>> f8be42d63de262171d89e18236b87fc9b77398a6
 Abban az esetben, ha nem külön domainen fut a két szerver, akkor Cors error-ok elkerülése érdekében figyelemben kell venni a port számokat.
 
 **Frontendnek** a localhost:3000  linken kell elérhető, ha port különbözik, akkor a szerver gyökérkönyvtárában található startup.cs fájlban átkell írni a portot.
@@ -53,7 +47,6 @@ Ezt a ./client/.env fájlban tudod megtenni a REACT_APP_API_URL átírásával
 
 Mind a kettő esetben a újra kell indítani a módosított programot. 
 
-<<<<<<< HEAD
 Ha mindent jól csináltuk az applikáció használatra készen áll. 
 
 ## Frontend felépítése
@@ -84,8 +77,6 @@ A project ./client mappába került. A komponensek a ./src/Components mappában 
 2. TodoTypeComponent:
 
    ![](C:\Users\Ricsi\Desktop\todotypestruck.PNG)
-
-
 
 
 
@@ -169,13 +160,6 @@ Test projektben pedig az egy szerény teszt-et tartalmazza.
 =======
 
 
-
-
-
-
-
-
->>>>>>> f8be42d63de262171d89e18236b87fc9b77398a6
 
 
 

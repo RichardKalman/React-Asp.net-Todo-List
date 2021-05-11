@@ -39,7 +39,7 @@ Abban az esetben, ha nem külön domainen fut a két szerver, akkor Cors error-o
 
 **Frontendnek** a localhost:3000  linken kell elérhető, ha port különbözik, akkor a szerver gyökérkönyvtárában található startup.cs fájlban átkell írni a portot.
 
-  ![](https://github.com/RichardKalman/React-Asp.net-Todo-List/blob/main/Image/dragdropstruct.PNG)
+  ![](https://github.com/RichardKalman/React-Asp.net-Todo-List/blob/main/Image/serverport.PNG)
 
 **Backendnek** a localhost:5000 linken kell elérhető lennie, ha esetleg más porton érhető vagy másik URL-en, akkor megkell változtatni a frontenden.
 
@@ -72,11 +72,11 @@ A project ./client mappába került. A komponensek a ./src/Components mappában 
 
 1. DragDropComponent:
 
-   ![](C:\Users\Ricsi\Desktop\dragdropstruct.PNG) 
+   ![](https://github.com/RichardKalman/React-Asp.net-Todo-List/blob/main/Image/dragdropstruct.PNG) 
 
 2. TodoTypeComponent:
 
-   ![](C:\Users\Ricsi\Desktop\todotypestruck.PNG)
+   ![](https://github.com/RichardKalman/React-Asp.net-Todo-List/blob/main/Image/todotypestruck.PNG)
 
 
 

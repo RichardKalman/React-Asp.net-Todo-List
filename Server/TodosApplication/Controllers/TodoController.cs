@@ -33,26 +33,34 @@ namespace TodosApplication.Controllers
         {
             if(data == null)
             {
-                return BadRequest();
+                return BadRequest("Nem küldtél adatot a szerverre!");
             }
 
             dynamic json = JsonConvert.DeserializeObject(data);
 
-            string format = "yyyy-MM-dd";
-            
+            string format = "yyyy-MM-dd";          
 
             string mezo = json["mezo"];
             string deadline = json["deadline"];
             string name = json["name"];
             string details = json["details"];
+            
+            if(String.IsNullOrEmpty(mezo) || String.IsNullOrEmpty(deadline) || String.IsNullOrEmpty(name) || String.IsNullOrEmpty(details))
+            {
+                return BadRequest("Töltsd ki az összes adatot!");
+            }
 
             if (!DateTime.TryParseExact(deadline, format, CultureInfo.InvariantCulture,
                 DateTimeStyles.None, out DateTime deadlientime))
             {
-                return BadRequest();
+                return BadRequest("Rossz a dátum formátum!");
             }
 
-            var type = await dbContext.TodoTypes.Where(t => t.Name.ToLower().Equals(mezo)).SingleAsync();
+            var type = await dbContext.TodoTypes.Where(t => t.Name.ToLower().Equals(mezo)).SingleOrDefaultAsync();
+            if(type == null)
+            {
+                return NotFound("Nem található a tábla.");
+            }
 
             var maxseq = dbContext.Todo.Where(t => t.TypeId == type.Id);
             int max = 0;
@@ -75,84 +83,79 @@ namespace TodosApplication.Controllers
             return t ;
         }
 
-        [HttpDelete]
-        public async Task<ActionResult<Todo>> DeleteTodo([FromForm] string data)
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult<Todo>> DeleteTodo(int id)
         {
-            dynamic json = JsonConvert.DeserializeObject(data);
-            int id = Convert.ToInt32(json["id"]);
-            Todo ad = await dbContext.Todo.Where(a => a.Id == id).SingleOrDefaultAsync();
+            Todo t = await dbContext.Todo.Where(a => a.Id == id).SingleOrDefaultAsync();
 
-            var todos = dbContext.Todo.Where(t => t.TypeId == ad.TypeId);      
-
-
-            if (ad != null)
-                dbContext.Todo.Remove(ad);
+            if (t != null)
+                dbContext.Todo.Remove(t);
             else
             {
-                return BadRequest();
+                return BadRequest("Nem található a törölni kívánt elem.");
             }
-
-            await ReOrderTodos(todos);
-
+            var todotypes = dbContext.Todo.Where(t => t.TypeId == t.TypeId);
+            await ReOrderTodos(todotypes);
             return Ok();
 
         }
 
         [HttpPut("toothercolumn")]
-        public async Task<ActionResult<Todo>> PutTodoColumn([FromForm] string data)
+        public async Task<ActionResult<Todo>> PutTodoColumn([FromBody] ItemMove data)
         {
-            dynamic json = JsonConvert.DeserializeObject(data);
-            string destinationid = json["destinationid"];
-
-            //adatok
-            int id = Convert.ToInt32(json["item"].id);
-            int index = Convert.ToInt32(json["index"]);
-            var item = dbContext.Todo.Where(t => t.Id == id).SingleOrDefault();
-            //-adatok
-
-
-            var type = dbContext.TodoTypes.Where(t => t.Name.ToLower().Equals(destinationid.ToLower())).SingleOrDefault();
+            if(data.Id == -1 || String.IsNullOrEmpty(data.DestinationTableName) || data.DestinationIndex == -1)
+            {
+                return BadRequest("Nem adtál meg elegendő adatot!");
+            }
+            
+            
+            var item = dbContext.Todo.Where(t => t.Id == data.Id).SingleOrDefault();
+            if(item == null)
+            {
+                return NotFound("Nem található ilyen Item");
+            }
+            var type = dbContext.TodoTypes.Where(t => t.Name.ToLower().Equals(data.DestinationTableName.ToLower())).SingleOrDefault();
+            if(type == null)
+            {
+                return NotFound("Nem található ilyen Tábla");
+            }
 
             var originalTypeTodos = dbContext.Todo.Where(t => t.TypeId == item.TypeId && t.Id != item.Id);
             await ReOrderTodos(originalTypeTodos);
 
-            if (type == null)
-            {
-                return BadRequest();
-            }
 
             int number = item.Order;
             item.Type = type;
             item.TypeId = type.Id;
-            item.Order = index;
+            item.Order = data.DestinationIndex;
 
             await dbContext.SaveChangesAsync();
-
-            //újtábla újra rendezése
-            var todos = dbContext.Todo.Where(t => t.Order >= index && t.TypeId==type.Id /*&& t.Id != item.Id*/).OrderBy(t=>t.Order);
-            await ReOrderTodos(todos, index,item);
-
             return Ok();
         }
 
         [HttpPut("sort")]
-        public async Task<ActionResult<Todo>> PutTodoSort([FromForm] string data)
+        public async Task<ActionResult<Todo>> PutTodoSort([FromBody] ItemMove data)
         {
-            dynamic json = JsonConvert.DeserializeObject(data);
+            if (data.Id == -1 || data.DestinationIndex == -1)
+            {
+                return BadRequest("Nem adtál meg elegendő adatot!");
+            }
 
             //adatok
-            int id = Convert.ToInt32(json["item"].id);;
-            int srcindex = Convert.ToInt32(json["srcindex"]);
-            int destinationindex = Convert.ToInt32(json["destinationindex"]);
-            var item = dbContext.Todo.Where(t => t.Id == id).SingleOrDefault();
+
+            var item = dbContext.Todo.Where(t => t.Id == data.Id).SingleOrDefault();
+            if(item == null)
+            {
+                return NotFound("Nem található ilyen teendő");
+            }
             //-adatok
 
             //újtábla újra rendezése
             var todos = dbContext.Todo.Where(t =>  t.TypeId == item.TypeId).OrderBy(t => t.Order).ToList();
 
             await dbContext.SaveChangesAsync();
-            await ReOrderTodosRowSort(todos, srcindex, destinationindex);
-
+            await ReOrderTodosRowSort(todos, item.Order, data.DestinationIndex);
+            
             return Ok();
         }
 

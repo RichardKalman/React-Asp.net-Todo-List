@@ -28,18 +28,18 @@ import { Col, Container, Row, Card, ListGroup } from 'react-bootstrap';
   
     const sendOrder = async (item, fromindex, toindex) => {
       const send = {
-        item,
-        srcindex: fromindex - 1,
-        destinationindex: toindex - 1,
+        "id": item.id,
+        "sourceindex": fromindex - 1,
+        "destinationindex": toindex - 1,
   
       };
   
-      const data = new FormData();
-      data.append('data', JSON.stringify(send));
-  
       const requestOptions = {
         method: 'PUT',
-        body: data,
+        body:  JSON.stringify(send),
+        headers: {
+          'Content-Type': 'application/json'
+        },
       };
       try {
         fetch(`${process.env.REACT_APP_API_URL}/api/todotype/rowSort`, requestOptions);

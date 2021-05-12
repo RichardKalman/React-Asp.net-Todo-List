@@ -30,6 +30,7 @@ const NewTodoModalComponent = ({
             };
             const data = new FormData();
             data.append('data', JSON.stringify(item));
+           
 
             const requestOptions = {
               method: 'POST',

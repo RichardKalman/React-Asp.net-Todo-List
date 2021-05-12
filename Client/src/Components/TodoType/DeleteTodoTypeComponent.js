@@ -7,18 +7,15 @@ const DeleteTodoTypeComponent = ({getTodoTypes, selected, setTodoType, onHide, s
 
   
   const torles = () => {
-    let item = {
-      id: selected.id
-    }   
-
-    var data = new FormData();
-    data.append("data", JSON.stringify(item));
+  
 
     const requestOptions = {
       method: 'DELETE',
-      body: data
+      headers: {
+        'Content-Type': 'application/json'
+      },
     };
-    fetch(process.env.REACT_APP_API_URL+'/api/todotype', requestOptions)
+    fetch(process.env.REACT_APP_API_URL+'/api/todotype/'+selected.id, requestOptions)
       .then(response => {
         if(!response.ok){
           toast.error('Sikertelen törlés');          

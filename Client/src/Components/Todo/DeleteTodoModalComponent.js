@@ -5,18 +5,14 @@ import { formatDate } from '../../Utilities/dateTimeConvert';
 
 const DeleteTodoModalComponent = ({item, setTodos, onHide, show,}) => {
   const torles = () => {
-    const delitem = {
-      id: item.id,
-    };
-
-    const data = new FormData();
-    data.append('data', JSON.stringify(delitem));
-
+   
     const requestOptions = {
       method: 'DELETE',
-      body: data,
+      headers: {
+        'Content-Type': 'application/json'
+      },
     };
-    fetch(`${process.env.REACT_APP_API_URL}/api/todo`, requestOptions)
+    fetch(`${process.env.REACT_APP_API_URL}/api/todo/${item.id}`, requestOptions)
       .then((response) => {
         if (!response.ok) {
           toast.error('Sikertelen törlés');

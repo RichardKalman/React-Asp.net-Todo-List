@@ -39,20 +39,19 @@ const DragDropComponent = () => {
     allTodoLoad();
   }, []);
 
-  const sendUpdateColumn = async (item, destinationid, index) => {
-    const send = {
-
-      destinationid,
-      item,
-      index,
+  const sendUpdateColumn = async (item, destinationid, destinationindex) => {
+    const data = {
+      "id": item.id,
+      "Destinationtablename": destinationid,
+      "destinationindex": destinationindex,
     };
-
-    const data = new FormData();
-    data.append('data', JSON.stringify(send));
-
+    console.log(JSON.stringify(data))
     const requestOptions = {
       method: 'PUT',
-      body: data,
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      },
     };
     try {
       fetch(
@@ -63,19 +62,19 @@ const DragDropComponent = () => {
     }
   };
 
-  const sendUpdateSort = async (item, srcindex, destinationindex) => {
+  const sendUpdateSort = async (item, destinationindex) => {
     const send = {
-      item,
-      srcindex,
-      destinationindex,
+      "id": item.id,
+      "destinationindex": destinationindex,
     };
 
-    const data = new FormData();
-    data.append('data', JSON.stringify(send));
 
     const requestOptions = {
       method: 'PUT',
-      body: data,
+      body: JSON.stringify(send),
+      headers: {
+        'Content-Type': 'application/json'
+      },
     };
     try {
       fetch(
@@ -96,7 +95,7 @@ const DragDropComponent = () => {
     const itemCopy = { ...getTodos[source.droppableId].items[source.index] };
     // fel - le mozgásért felel
     if (destination.droppableId === source.droppableId && destination.index !== source.index) {
-      sendUpdateSort(itemCopy, source.index, destination.index);
+      sendUpdateSort(itemCopy, destination.index);
     }
     // oszlopok közötti mozgás
     if (destination.droppableId !== source.droppableId) {

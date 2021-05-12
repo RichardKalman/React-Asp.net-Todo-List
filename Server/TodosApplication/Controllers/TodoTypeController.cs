@@ -37,12 +37,15 @@ namespace TodosApplication.Controllers
         {
             if (data == null)
             {
-                return BadRequest();
+                return BadRequest("Nem küldtél adatot a szerverre!");
             }
 
             dynamic json = JsonConvert.DeserializeObject(data);
             string name = json["name"];
-            
+            if (String.IsNullOrEmpty(name))
+            {
+                return BadRequest("Töltsd ki az összes adatot!");
+            }
 
             var maxseq = dbContext.TodoTypes;
             int max = 0;
@@ -61,12 +64,18 @@ namespace TodosApplication.Controllers
             return t;
         }
 
-        [HttpDelete]
-        public async Task<ActionResult<IEnumerable<TodoType>>> DeleteTodoTypes([FromForm] string data)
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult<IEnumerable<TodoType>>> DeleteTodoTypes(int id)
         {
-            dynamic json = JsonConvert.DeserializeObject(data);
-            int id = Convert.ToInt32(json["id"]);
+            
             TodoType todotype = await dbContext.TodoTypes.Where(a => a.Id == id).SingleOrDefaultAsync();
+            if (todotype != null)
+                dbContext.TodoTypes.Remove(todotype);
+            else
+            {
+                return NotFound("Nincs ilyen tábla");
+            }
+
 
             var todos = dbContext.Todo.Where(t => t.TypeId == id).ToArray();
             if (todos.Any())
@@ -77,14 +86,6 @@ namespace TodosApplication.Controllers
                 }
             }
 
-
-            if (todotype != null)
-                dbContext.TodoTypes.Remove(todotype);
-            else
-            {
-                return BadRequest();
-            }
-
             await dbContext.SaveChangesAsync();
 
             return await ReOrderTodoType();
@@ -93,21 +94,23 @@ namespace TodosApplication.Controllers
         }
 
         [HttpPut("rowSort")]
-        public async Task<ActionResult<Todo>> PutTodoSort([FromForm] string data)
+        public async Task<ActionResult<Todo>> PutTodoTypeSort([FromBody] ItemMove data)
         {
-            dynamic json = JsonConvert.DeserializeObject(data);
 
-            //adatok
-            int id = Convert.ToInt32(json["item"].id); ;
-            int srcindex = Convert.ToInt32(json["srcindex"]);
-            int destinationindex = Convert.ToInt32(json["destinationindex"]);
-            //-adatok
-
-            //újtábla újra rendezése
+            if (data.Id == -1 || data.DestinationIndex == -1 || data.SourceIndex == -1)
+            {
+                return BadRequest("Nem adtál meg elegendő adatot!");
+            }
+            
+            var tt = dbContext.TodoTypes.Where(t => t.Id == data.Id).SingleOrDefault();
+            if(tt == null)
+            {
+                return NotFound("Nem található ilyen tábla");
+            }
             var todotypes = dbContext.TodoTypes.OrderBy(t => t.Order).ToList();
 
             await dbContext.SaveChangesAsync();
-            await ReOrderTodoTypeRowSort(todotypes, srcindex, destinationindex);
+            await ReOrderTodoTypeRowSort(todotypes, data.SourceIndex, data.DestinationIndex);
 
             return Ok();
         }

@@ -106,6 +106,13 @@ Ebben a namespaceben található a 2 darab entitást, amilyen tábla van az adat
 - Name: String típusú. A tábla nevét tárolja
 - Order: Integer típusú, sorrend meghatározására használt tulajdonság
 
+**ItemMove entitás tulajdonságai:**
+Ez az adatszerkezet írja le a controllernek, hogy milyen adatot várunk mikor put kérés jön.
+- Id: Integer típusú a motgatni kívánt elem id-ja, 
+- DestinationTableName: String típusú. a cél tábla nevét tartalmazza
+- DestinationIndex: Integer típusú, cél index helyét tartalmazza
+- Sourceindex: integer típusú, melyik indexen található meg jelenleg
+
 ### TodosApplication.DAL
 
 Ebben a namespaceben 2 db fájl található. Egy Interface ami a tesztelhetőség miatt kell és egy class ami az adatelérést felel.
@@ -129,8 +136,8 @@ Végpontjai:
 |     GET      |        /api/Todo        | Lekéri az összes teendőt, order szerint növekvő rendezéssel |               -                |     IEnumerable<Todo>      |
 |     POST     |        /api/Todo        |                   Hozzáad egy új teendőt                    |   mezo,deadline,name,details   | Az új teendővel tér vissza |
 |    DELETE    |        /api/Todo        |                      Töröl id szerint                       |               id               |         HTTP code          |
-|     PUT      | /api/Todo/toothercolumn |        Áthelyezz egy másik táblába egy adott teendőt        |   Item, Destinationid, index   |         HTTP code          |
-|     PUT      |     /api/Todo/sort      |              Egy teendő rendezése táblán belül              | item,srcindex destinationindex |         HTTP code          |
+|     PUT      | /api/Todo/toothercolumn |        Áthelyezz egy másik táblába egy adott teendőt        |   item Id, Destinationtablenev, destinationindex   |         HTTP code          |
+|     PUT      |     /api/Todo/sort      |              Egy teendő rendezése táblán belül              | item id,destinationindex |         HTTP code          |
 
 Ezeken kívül kettő darab függvény van benne: 
 
@@ -148,7 +155,7 @@ Ezeken kívül kettő darab függvény van benne:
 |     GET      |     /api/TodoType     | Lekéri az összes teendőtáblát, order szerint növekvő rendezéssel |             -              |   IEnumerable<TodoType>    |
 |     POST     |     /api/TodoType     |                 Hozzáad egy új teendőtáblát                  |            name            | Az új teendővel tér vissza |
 |    DELETE    |     /api/TodoType     | Töröl id szerint, és kitörli az összes Todo elemet ami hozzátartozik |             id             |         HTTP code          |
-|     PUT      | /api/TodoType/rowSort |        Áthelyezz egy másik táblába egy adott teendőt         | Item, Destinationid, index |         HTTP code          |
+|     PUT      | /api/TodoType/rowSort |        Áthelyezz egy másik táblába egy adott teendőt         | Item id, DestinationIndex, SourceIndex |         HTTP code          |
 
 
 

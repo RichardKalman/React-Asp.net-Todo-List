@@ -19,7 +19,7 @@ Töltsük vagy klónozzuk a repositoryt
 
 ### Backend elindítása
 
-./Server mappában található indítsuk el .sln fájlt és futtasuk a programot. 
+./Server mappában található indítsuk el .sln fájlt és buildjük a projectet, majd futtasuk. 
 
 ### Frontend elindítása
 
@@ -28,10 +28,6 @@ Töltsük vagy klónozzuk a repositoryt
 1. **npm install**  ez a package-ek telepítésért felelős, leszed az internetről minden függőséget
 2. ### **npm start** frontend indítása. 
 
-#### Alapértelmezett elérési utak, portok és változtatása
-
-
-2. **npm start** frontend indítása. 
 
 #### Alapértelmezett elérési utak, portok és változtatása
 
@@ -156,7 +152,7 @@ Ezeken kívül kettő darab függvény van benne:
 
 
 
-Test projektben pedig az egy szerény teszt-et tartalmazza.
+
 =======
 
 

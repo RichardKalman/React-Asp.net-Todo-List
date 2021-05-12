@@ -1,5 +1,4 @@
 import { Modal, Button, Form } from 'react-bootstrap';
-
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 
